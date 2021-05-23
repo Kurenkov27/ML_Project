@@ -8,18 +8,18 @@ from PIL import Image
 
 def run_scrapper():
 
-    pages = range(1, 2)
+    pages = range(1, 5)
+
+    with open('csv_data_file.csv', 'a', encoding='UTF8') as f:
+        header = ['name', 'price']
+        writer = csv.writer(f)
+        writer.writerow(header)
 
     for page in pages:
         url = f'https://auto.ria.com/uk/legkovie/?page={ page }'
         page = requests.get(url)
 
         soup = bs4.BeautifulSoup(page.text, 'html.parser')
-
-        with open('csv_data_file.csv', 'a', encoding='UTF8') as f:
-            header = ['name', 'price']
-            writer = csv.writer(f)
-            writer.writerow(header)
 
         for item in soup.select('.address'):
             name = item.text
